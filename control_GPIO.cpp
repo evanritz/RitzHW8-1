@@ -34,7 +34,7 @@ string make_path(string pin) {
 
 int write(string path, string filename, string value){
    fstream fs;
-   fs.open((path + filename).c_str());
+   fs.open((path + filename), fstream::out);
    if (!fs.is_open()){
 	   perror("GPIO: write failed to open file ");
 	   return -1;
@@ -46,7 +46,7 @@ int write(string path, string filename, string value){
 
 string read(string path, string filename){
    fstream fs;
-   fs.open((path + filename).c_str());
+   fs.open((path + filename), fstream::in);
    if (!fs.is_open()){
 	   perror("GPIO: read failed to open file ");
     }
@@ -90,6 +90,9 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    // opin => output pin
+    // ipin => input pin
+
     string opin(argv[1]);
     string state(argv[2]);
     string ipin(argv[3]);
@@ -97,8 +100,9 @@ int main(int argc, char* argv[]) {
     string opin_path = make_path(opin);
     string ipin_path = make_path(ipin);
 
-    setDirection(0, ipin_path);
-    setDirection(1, opin_path);
+    // Not needed, use config-pin
+    //setDirection(0, ipin_path);
+    //setDirection(1, opin_path);
 
     if (state == "hi") {
         setValue(1, opin_path);
